@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Movie Recommendation Quest | C Programming Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body>
+<nav><div class="wrap"><b>Movie Quest</b><a href="#about">About</a><a href="#working">Working</a><a href="#design">Design</a><a href="#code">Code</a><a href="#analysis">Analysis</a><a href="#conclusion">Conclusion</a></div></nav>
+<main class="wrap">
+<header class="hero"><div>
+<h1>Pick a genre. Get a movie.</h1>
+<p>A menu-driven movie recommendation program written in C. Choose a genre and it lists matching titles with their language and rating. Try the program on the right.</p>
+<a class="btn" href="#code">View the C code</a><a class="btn alt" href="#working">How it works</a>
+<div class="meta">Ashwani Yadav, B.Tech CSE-AI<br>Amrita Vishwa Vidyapeetham, C Programming Unit 1 Project, 2026–2027</div></div>
+<div class="term" aria-label="Interactive demo of the program"><div class="bar"><i></i><i></i><i></i></div><div class="screen" id="screen" aria-live="polite"></div><div class="choices" id="choices"></div></div>
+</header>
+
+<section id="about"><div class="two"><div><h2>Problem statement</h2><p>People often spend time deciding which movie to watch. This project is a simple C program that helps a user find movies by genre. It shows matching titles along with their language and rating.</p></div>
+<div><h2>Objectives</h2><ul><li>Build a menu-driven recommendation program in C.</li><li>Store title, genre, language and rating for each movie.</li><li>Let the user select a preferred genre.</li><li>Display the movies that match.</li><li>Practise arrays, structures, loops, conditions and functions.</li></ul></div></div></section>
+
+<section id="working"><h2>How it works</h2><p style="color:var(--muted);max-width:62ch">The program holds a small predefined list of 10 movies. After the user enters a choice, it checks each movie one by one and prints the ones in that genre.</p>
+<ol class="flow"><li>Start the program</li><li>Display genre menu</li><li>Read user's choice</li><li>Check movies for the genre</li><li>Display matches</li><li>Return to menu or exit</li></ol></section>
+
+<section id="design"><h2>Program design</h2>
+<table><thead><tr><th>Component</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>struct Movie</code></td><td>Stores the title, genre, language and rating of each movie.</td></tr>
+<tr><td><code>displayMenu()</code></td><td>Shows the genre choices and the exit option.</td></tr>
+<tr><td><code>showRecommendations()</code></td><td>Checks the selected genre and prints matching movies.</td></tr>
+<tr><td><code>main()</code></td><td>Runs the menu, reads input and calls the other functions.</td></tr></tbody></table>
+<h3 style="margin-top:28px">C concepts used</h3>
+<span class="tag">Structure</span><span class="tag">Array</span><span class="tag">Functions</span><span class="tag">Loops</span><span class="tag">Conditionals</span><span class="tag">strcmp()</span>
+<p style="color:var(--muted)">The movie list lives in the source code, so the program needs no internet connection or database.</p></section>
+
+<section id="code"><h2>C program</h2><p style="color:var(--muted)">Save as <code>movie_recommendation_quest.c</code>, then compile with <code>gcc movie_recommendation_quest.c -o moviequest</code>.</p>
+<div class="codebox"><button class="btn copy" id="copy">Copy code</button><pre><code id="code">/* Movie Recommendation Quest
+   A simple genre-based movie recommendation program in C. */
+
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct Movie {
+    char title[50];
+    char genre[20];
+    char language[20];
+    float rating;
+};
+
+void displayMenu(void) {
+    printf(&quot;\n===== MOVIE RECOMMENDATION QUEST =====\n&quot;);
+    printf(&quot;1. Action\n&quot;);
+    printf(&quot;2. Comedy\n&quot;);
+    printf(&quot;3. Drama\n&quot;);
+    printf(&quot;4. Animation\n&quot;);
+    printf(&quot;5. Science Fiction\n&quot;);
+    printf(&quot;6. Exit\n&quot;);
+}
+
+void showRecommendations(struct Movie movies[], int count,
+                         const char selectedGenre[]) {
+    int i, found = 0;
+
+    printf(&quot;\n--- Recommended Movies ---\n&quot;);
+
+    for (i = 0; i &lt; count; i++) {
+        if (strcmp(movies[i].genre, selectedGenre) == 0) {
+            printf(&quot;\nMovie: %s\n&quot;, movies[i].title);
+            printf(&quot;Genre: %s\n&quot;, movies[i].genre);
+            printf(&quot;Language: %s\n&quot;, movies[i].language);
+            printf(&quot;Rating: %.1f/10\n&quot;, movies[i].rating);
+            found = 1;
+        }
+    }
+
+    if (found == 0) {
+        printf(&quot;No movies found in this genre.\n&quot;);
+    }
+}
+
+int main(void) {
+    struct Movie movies[] = {
+        {&quot;Warrior&#x27;s Path&quot;, &quot;Action&quot;, &quot;Hindi&quot;, 8.1},
+        {&quot;Sky Mission&quot;, &quot;Action&quot;, &quot;English&quot;, 7.8},
+        {&quot;Laugh Out Loud&quot;, &quot;Comedy&quot;, &quot;Hindi&quot;, 8.0},
+        {&quot;Funny Days&quot;, &quot;Comedy&quot;, &quot;English&quot;, 7.5},
+        {&quot;The Last Letter&quot;, &quot;Drama&quot;, &quot;Hindi&quot;, 8.4},
+        {&quot;Life&#x27;s Journey&quot;, &quot;Drama&quot;, &quot;English&quot;, 8.2},
+        {&quot;Magic Planet&quot;, &quot;Animation&quot;, &quot;English&quot;, 8.6},
+        {&quot;Little Heroes&quot;, &quot;Animation&quot;, &quot;Hindi&quot;, 7.9},
+        {&quot;Future World&quot;, &quot;Science Fiction&quot;, &quot;English&quot;, 8.7},
+        {&quot;Beyond Earth&quot;, &quot;Science Fiction&quot;, &quot;Hindi&quot;, 8.0}
+    };
+
+    int count = sizeof(movies) / sizeof(movies[0]);
+    int choice;
+    char selectedGenre[20];
+
+    do {
+        displayMenu();
+        printf(&quot;Enter your choice: &quot;);
+
+        if (scanf(&quot;%d&quot;, &amp;choice) != 1) {
+            printf(&quot;Invalid input. Please enter a number.\n&quot;);
+            return 0;
+        }
+
+        switch (choice) {
+            case 1:
+                strcpy(selectedGenre, &quot;Action&quot;);
+                break;
+            case 2:
+                strcpy(selectedGenre, &quot;Comedy&quot;);
+                break;
+            case 3:
+                strcpy(selectedGenre, &quot;Drama&quot;);
+                break;
+            case 4:
+                strcpy(selectedGenre, &quot;Animation&quot;);
+                break;
+            case 5:
+                strcpy(selectedGenre, &quot;Science Fiction&quot;);
+                break;
+            case 6:
+                printf(&quot;Thank you for using Movie Recommendation Quest!\n&quot;);
+                break;
+            default:
+                printf(&quot;Invalid choice. Please select 1 to 6.\n&quot;);
+        }
+
+        if (choice &gt;= 1 &amp;&amp; choice &lt;= 5) {
+            showRecommendations(movies, count, selectedGenre);
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
+</code></pre></div></section>
+
+<section id="analysis"><h2>Analysis and observations</h2>
+<div class="two"><div><div class="big">O(n)</div><p>Each recommendation request checks all n movies once, so searching takes linear time. The program reuses the existing array, so no separate database is needed.</p>
+<table><tbody><tr><th>Movies stored</th><td>10</td></tr><tr><th>Genres</th><td>5</td></tr><tr><th>Exit</th><td>Option 6</td></tr></tbody></table></div>
+<ul><li>Recommendations depend on the genre the user selects.</li><li>More than one movie can appear for the same genre.</li><li>Functions keep the code easy to read and maintain.</li><li>If no movie matches, a message is shown.</li><li>New movies can be added by extending the array.</li></ul></div></section>
+
+<section id="conclusion"><h2>Conclusion</h2><p style="max-width:68ch">Movie Recommendation Quest recommends movies by the user's preferred genre: Action, Comedy, Drama, Animation or Science Fiction. It shows how structures, arrays, functions, loops, conditionals and string handling work together in C. Future versions could add more movies, more filters and user-defined entries.</p>
+<h3 style="margin-top:28px">References</h3><ul style="color:var(--muted);font-size:15px"><li>Kernighan and Ritchie, <i>The C Programming Language</i>, Prentice Hall.</li><li>Yashavant Kanetkar, <i>Let Us C</i>, BPB Publications.</li><li>C standard library documentation: stdio.h and string.h.</li><li>Class notes and practical exercises on C programming.</li></ul></section>
+</main>
+<footer class="float">Made by Ashwini</footer>
+<script src="script.js"></script></body></html>
